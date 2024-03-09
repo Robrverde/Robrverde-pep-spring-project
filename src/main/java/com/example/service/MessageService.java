@@ -13,6 +13,11 @@ import com.example.exception.ResourceNotFoundException;
 public class MessageService {
     private List<Message> messageList = new ArrayList<>();
 
+    public void addMessage(Message message)
+    {
+        messageList.add(message);
+    }
+
     public List<Message> getMessageList()
     {
         return messageList;
