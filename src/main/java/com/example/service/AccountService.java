@@ -3,6 +3,8 @@ package com.example.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.AuthenticationException;
+
 import com.example.entity.Account;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +27,16 @@ public class AccountService {
     public void register(Account newAccount)
     {
         accountList.add(newAccount);
+    }
+
+    public void login(String username, String password) throws AuthenticationException
+    {
+        for(Account account : accountList)
+        {
+            if(account.getUsername().equals(username) && account.getPassword().equals(password))
+                return;
+        }
+
+        throw new AuthenticationException("Should throw error 401");
     }
 }
