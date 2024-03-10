@@ -31,9 +31,9 @@ public class AccountService {
         accountRepository.save(newAccount);
     }
 
-    //TODO: Custome Query for login
+    
     public void login(String username, String password) throws AuthenticationException
     {
-        
+        accountRepository.findByUsernameAndPassword(username, password);
     }
 }
