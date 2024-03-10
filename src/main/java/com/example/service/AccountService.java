@@ -6,6 +6,7 @@ import java.util.List;
 import javax.naming.AuthenticationException;
 
 import com.example.entity.Account;
+import com.example.repository.AccountRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,30 +14,26 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountService {
     
-    private List<Account> accountList = new ArrayList<>();
+    private AccountRepository accountRepository;
 
     private MessageService messageService;
 
     //Dependency injection of Message Service
     @Autowired
-    public AccountService(MessageService messageService)
+    public AccountService(MessageService messageService, AccountRepository accountRepository)
     {
         this.messageService = messageService;
+        this.accountRepository = accountRepository;
     }
 
     public void register(Account newAccount)
     {
-        accountList.add(newAccount);
+        accountRepository.save(newAccount);
     }
 
+    //TODO: Custome Query for login
     public void login(String username, String password) throws AuthenticationException
     {
-        for(Account account : accountList)
-        {
-            if(account.getUsername().equals(username) && account.getPassword().equals(password))
-                return;
-        }
-
-        throw new AuthenticationException("Should throw error 401");
+        
     }
 }
