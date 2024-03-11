@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.entity.Account;
 import com.example.entity.Message;
 import com.example.exception.DuplicateUsernameFoundException;
+import com.example.exception.ResourceNotFoundException;
 import com.example.service.AccountService;
 import com.example.service.MessageService;
 
@@ -44,28 +45,30 @@ public class SocialMediaController {
     @PostMapping("register")
     public ResponseEntity<Account> register(@RequestBody Account account) throws AuthenticationException, DuplicateUsernameFoundException
     {
-        accountService.register(account);
+        Account created = accountService.register(account);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(account);
+                .body(created);
     }
 
     @PostMapping("login")
-    public ResponseEntity<Account> login(@RequestBody Account account) throws AuthenticationException
+    public ResponseEntity<Account> login(@RequestBody Account account) throws ResourceNotFoundException
     {
-        accountService.login(account.getUsername(), account.getPassword());
+        Account found = accountService.login(account.getUsername(), account.getPassword());
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(account);
+                .body(found);
     }
 
+    //Create a message
     @PostMapping("messages")
     public ResponseEntity<Message> createMessage(@RequestBody Message message) throws AuthenticationException
     {
-        messageService.addMessage(message);
+        Message created = messageService.addMessage(message);
 
-        return ResponseEntity.status(HttpStatus.OK).body(message);
+        return ResponseEntity.status(HttpStatus.OK).body(created);
     }
 
+    //Retrieve all messages
     @GetMapping("messages")
     public List<Message> getAllMessages()
     {
