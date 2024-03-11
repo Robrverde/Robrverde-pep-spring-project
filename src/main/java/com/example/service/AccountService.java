@@ -7,6 +7,7 @@ import javax.naming.AuthenticationException;
 
 import com.example.entity.Account;
 import com.example.exception.DuplicateUsernameFoundException;
+import com.example.exception.ResourceNotFoundException;
 import com.example.repository.AccountRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
-    public void register(Account newAccount) throws AuthenticationException, DuplicateUsernameFoundException
+    public Account register(Account newAccount) throws AuthenticationException, DuplicateUsernameFoundException
     {
         //check if the account is valid
         if(newAccount.getUsername().length() == 0 || newAccount.getPassword().length() < 4)
@@ -41,12 +42,16 @@ public class AccountService {
             throw new DuplicateUsernameFoundException("There already exists an account with the username: " + newAccount.getUsername());
         
         accountRepository.save(newAccount);
+
+        return newAccount;
     }
 
-    public void login(String username, String password) throws AuthenticationException
+    public Account login(String username, String password) throws ResourceNotFoundException
     {
-        accountRepository.findByUsernameAndPassword(username, password);
+        return accountRepository.findByUsernameAndPassword(username, password)
+                        .orElseThrow(() -> new ResourceNotFoundException("Login was unsuccessful."));
     }
 
+    
 
 }
