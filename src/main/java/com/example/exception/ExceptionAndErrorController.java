@@ -19,14 +19,14 @@ public class ExceptionAndErrorController
     {
         return ex.getParameterName();
     }
-
+    */
     @ExceptionHandler(ResourceNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public String handleNotFound(ResourceNotFoundException ex)
     {
         return ex.getMessage();
     }
-    */
+    
 
     @ExceptionHandler(AuthenticationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
