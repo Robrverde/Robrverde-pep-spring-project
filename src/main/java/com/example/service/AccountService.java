@@ -49,9 +49,12 @@ public class AccountService {
     public Account login(String username, String password) throws ResourceNotFoundException
     {
         return accountRepository.findByUsernameAndPassword(username, password)
-                        .orElseThrow(() -> new ResourceNotFoundException("Login was unsuccessful."));
+                .orElseThrow(() -> new ResourceNotFoundException("Login was unsuccessful."));
     }
 
-    
-
+    public Account getAccountById(int account_id) throws AuthenticationException
+    {
+        return accountRepository.findById(account_id)
+                .orElseThrow(() -> new AuthenticationException("Account was not found"));
+    }
 }

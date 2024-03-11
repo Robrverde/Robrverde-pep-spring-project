@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import javax.naming.AuthenticationException;
+
 import com.example.entity.Message;
 import com.example.exception.ResourceNotFoundException;
 import com.example.repository.MessageRepository;
@@ -20,9 +22,15 @@ public class MessageService {
         this.messageRepository = messageRepository;
     }
 
-    public void addMessage(Message message)
+    public Message addMessage(Message message) throws AuthenticationException
     {
-        messageRepository.save(message);
+        if(message.getMessage_text().length() > 0 && message.getMessage_text().length() <= 255)
+        {
+            messageRepository.save(message);
+            return message;
+        }
+
+        throw new AuthenticationException("Message could not be created.");
     }
 
     public List<Message> getMessageList()

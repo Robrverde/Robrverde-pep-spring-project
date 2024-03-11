@@ -63,6 +63,10 @@ public class SocialMediaController {
     @PostMapping("messages")
     public ResponseEntity<Message> createMessage(@RequestBody Message message) throws AuthenticationException
     {
+        //check if the account creating the message exists, and returns it
+        accountService.getAccountById(message.getPosted_by());
+
+        //create a message object it a new message was successfuly created
         Message created = messageService.addMessage(message);
 
         return ResponseEntity.status(HttpStatus.OK).body(created);
