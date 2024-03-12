@@ -1,8 +1,5 @@
 package com.example.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.naming.AuthenticationException;
 
 import com.example.entity.Account;
@@ -18,13 +15,10 @@ public class AccountService {
     
     private AccountRepository accountRepository;
 
-    private MessageService messageService;
-
     //Dependency injection of Message Service
     @Autowired
-    public AccountService(MessageService messageService, AccountRepository accountRepository)
+    public AccountService(AccountRepository accountRepository)
     {
-        this.messageService = messageService;
         this.accountRepository = accountRepository;
     }
 
