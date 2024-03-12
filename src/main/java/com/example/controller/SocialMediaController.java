@@ -7,8 +7,10 @@ import javax.naming.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -77,5 +79,30 @@ public class SocialMediaController {
     public List<Message> getAllMessages()
     {
         return messageService.getMessageList();
+    }
+
+    //Get message by ID
+    @GetMapping("messages/{message_id}")
+    public ResponseEntity<Message> getMessageById(@PathVariable int message_id)
+    {
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(messageService.getMessageByID(message_id));
+    }
+
+    //Delete message by ID
+    @DeleteMapping("messages/{message_id}")
+    public ResponseEntity<Integer> deleteMessageById(@PathVariable int message_id)
+    {
+        Message message =  messageService.getMessageByID(message_id);
+
+        if(message != null)
+        {
+            messageService.deleteMessageByID(message_id);
+            return ResponseEntity.status(HttpStatus.OK)
+            .body(1);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(null);
     }
 }
