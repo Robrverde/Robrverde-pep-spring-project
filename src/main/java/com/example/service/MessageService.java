@@ -8,7 +8,6 @@ import java.util.List;
 import javax.naming.AuthenticationException;
 
 import com.example.entity.Message;
-import com.example.exception.ResourceNotFoundException;
 import com.example.repository.MessageRepository;
 
 
@@ -61,5 +60,10 @@ public class MessageService {
 
         message.setMessage_text(new_text);
         messageRepository.save(message);
+    }
+
+    public List<Message> getAllMessagesFromUser(int account_id)
+    {
+        return messageRepository.findByPostedBy(account_id);
     }
 }
