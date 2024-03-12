@@ -26,8 +26,7 @@ public class MessageService {
     {
         if(message.getMessage_text().length() > 0 && message.getMessage_text().length() <= 255)
         {
-            messageRepository.save(message);
-            return message;
+            return messageRepository.save(message);
         }
 
         throw new AuthenticationException("Message could not be created.");
@@ -49,15 +48,18 @@ public class MessageService {
         messageRepository.deleteById(message_id);
     }
 
-    public void patchMessageByID(int message_id, String new_text) throws ResourceNotFoundException
+    public void patchMessageByID(int message_id, String new_text) throws AuthenticationException
     {
         Message message = messageRepository.findById(message_id)
-                .orElseThrow(() -> new ResourceNotFoundException("Message not found"));
+                .orElseThrow(() -> new AuthenticationException("Message was not found."));
 
         //check if the new text is valid (not blank and not over 255 characters)
-        if(new_text.length() > 0 && new_text.length() <= 255)
-            message.setMessage_text(new_text);
-        
+        if(new_text.length() == 0 || new_text.length() > 255)
+        {
+            throw new AuthenticationException("New text is invalid");
+        }
+
+        message.setMessage_text(new_text);
         messageRepository.save(message);
     }
 }
